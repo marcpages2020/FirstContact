@@ -66,6 +66,30 @@ int main(int argc, char *argv[]) {
 					break;
 				}
 				break;
+			case SDL_KEYUP:
+				switch (event.key.keysym.sym) {
+				case SDLK_UP:
+					y =y;
+					break;
+				case SDLK_DOWN:
+					y = y;
+					break;
+				case SDLK_RIGHT:
+					x = x;
+					break;
+				case SDLK_LEFT:
+					x = x ;
+					break;
+				case SDLK_SPACE:
+					sx = sx;
+					sy = sy;
+					break;
+				case SDLK_ESCAPE:
+					break;
+				default:
+					break;
+				}
+				break;
 			case SDL_QUIT:
 			return 0;
 			break;
