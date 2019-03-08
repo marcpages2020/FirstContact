@@ -1,15 +1,18 @@
 #include <iostream>
 #include<time.h>
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
 using namespace std;
 #define speed 20;
 #define shotspeed 30;
 #pragma comment(lib, "SDL/SDL2.lib")
 #pragma comment(lib, "SDL/SDL2main.lib")
+#pragma comment(lib, "DL_image/libx86/SDL2_image.lib")
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
+int flags = IMG_INIT_PNG;
+int innited = IMG_Init(flags);
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
@@ -17,11 +20,14 @@ int main(int argc, char *argv[]) {
 	SDL_Renderer *render;
 	int SDL_init(SDL_INIT_VIDEO);
 
-	window = SDL_CreateWindow("RedBox", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("MyAwesomeGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
 	if (window == NULL) {
-		cout << "Could not creat window" << SDL_GetError() << endl;
+		cout << "Could not create window" << SDL_GetError() << endl;
 		return 1;
 	}
+
+	int flags = IMG_INIT_PNG;
+	int innited = IMG_Init(flags);
 
 	int x = 0;
 	int y = 0;
@@ -50,15 +56,15 @@ int main(int argc, char *argv[]) {
 					x = x - speed;
 					break;
 				case SDLK_SPACE:
-					sx = x+45;
+					sx = x + 45;
 					sy = y + 25;
 					break;
 				case SDLK_ESCAPE:
 					return 0;
-				/*case (SDLK_LEFT&&SDLK_RIGHT):
+					/*case (SDLK_LEFT&&SDLK_RIGHT):
 					x = x;
 					break;
-				case (SDLK_DOWN && SDLK_UP):
+					case (SDLK_DOWN && SDLK_UP):
 					y = y;
 					break;
 					*/
@@ -69,7 +75,7 @@ int main(int argc, char *argv[]) {
 			case SDL_KEYUP:
 				switch (event.key.keysym.sym) {
 				case SDLK_UP:
-					y =y;
+					y = y;
 					break;
 				case SDLK_DOWN:
 					y = y;
@@ -78,7 +84,7 @@ int main(int argc, char *argv[]) {
 					x = x;
 					break;
 				case SDLK_LEFT:
-					x = x ;
+					x = x;
 					break;
 				case SDLK_SPACE:
 					sx = sx;
@@ -91,12 +97,13 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			case SDL_QUIT:
-			return 0;
-			break;
+				return 0;
+				break;
 			}
 		}
 
 		sx = sx + shotspeed;
+
 		render = SDL_CreateRenderer(window, -1, 0);
 		SDL_SetRenderDrawColor(render, 0, 0, 100, 255);
 		SDL_RenderClear(render);
