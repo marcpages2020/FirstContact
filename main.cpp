@@ -7,27 +7,26 @@ using namespace std;
 #define shotspeed 30;
 #pragma comment(lib, "SDL/SDL2.lib")
 #pragma comment(lib, "SDL/SDL2main.lib")
-#pragma comment(lib, "DL_image/libx86/SDL2_image.lib")
+#pragma comment(lib, "SDL_image/libx86/SDL2_image.lib")
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-int flags = IMG_INIT_PNG;
-int innited = IMG_Init(flags);
+
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
-	SDL_Window *window;
+	SDL_Window *window; // we create a pointer for the window
 	SDL_Renderer *render;
 	int SDL_init(SDL_INIT_VIDEO);
 
-	window = SDL_CreateWindow("MyAwesomeGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("MyAwesomeGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE); //(position,position,size,size,flag)
 	if (window == NULL) {
-		cout << "Could not create window" << SDL_GetError() << endl;
+		cout << "Could not create window" << SDL_GetError() << endl; // in the case it cannot be created it returns null
 		return 1;
 	}
 
-	int flags = IMG_INIT_PNG;
-	int innited = IMG_Init(flags);
+	/*int flags = IMG_INIT_PNG;
+	int innited = IMG_Init(flags);*/
 
 	int x = 0;
 	int y = 0;
@@ -36,8 +35,8 @@ int main(int argc, char *argv[]) {
 	int multx = 2;
 	int multy = 2;
 
-	while (1) {
-		SDL_Event event;
+	while (1) { 
+		SDL_Event event; //we create an event
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
@@ -104,17 +103,17 @@ int main(int argc, char *argv[]) {
 
 		sx = sx + shotspeed;
 
-		render = SDL_CreateRenderer(window, -1, 0);
-		SDL_SetRenderDrawColor(render, 0, 0, 100, 255);
-		SDL_RenderClear(render);
-		SDL_Rect rectangle;
+		render = SDL_CreateRenderer(window, -1, 0); // (name of the window, index of rendering, flags)
+		SDL_SetRenderDrawColor(render, 0, 0, 100, 255); // we set the color of the render 
+		SDL_RenderClear(render); //clear the entire screen to our selected color
+		SDL_Rect rectangle; //create a rectangle
 		rectangle.x = x;
 		rectangle.y = y;
 		rectangle.w = 75;
 		rectangle.h = 50;
-		SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-		SDL_RenderFillRect(render, &rectangle);
-		SDL_Rect shot;
+		SDL_SetRenderDrawColor(render, 255, 0, 0, 255); // set the color
+		SDL_RenderFillRect(render, &rectangle); //render the rectangle
+		SDL_Rect shot; 
 		shot.x = sx;
 		shot.y = sy;
 		shot.w = 10;
