@@ -13,11 +13,17 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 int main(int argc, char *argv[]) {
-	srand(time(NULL));
-
 	SDL_Window *window; // we create a pointer for the window
 	SDL_Renderer *render;
+	SDL_Texture *background("background.png");
+	SDL_Rect r_spaceship, r_shot, r_background;
 	int SDL_init(SDL_INIT_VIDEO);
+	int imgFlags = IMG_INIT_PNG;
+
+	int x = 0;
+	int y = 0;
+	int sx = 0;
+	int sy = 0;
 
 	window = SDL_CreateWindow("MyAwesomeGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE); //(position,position,size,size,flag)
 	if (window == NULL) {
@@ -25,17 +31,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	/*int flags = IMG_INIT_PNG;
-	int innited = IMG_Init(flags);*/
-
-	int x = 0;
-	int y = 0;
-	int sx = 0;
-	int sy = 0;
-	int multx = 2;
-	int multy = 2;
-
-	while (1) { 
+	while (1) {
 		SDL_Event event; //we create an event
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
@@ -60,13 +56,6 @@ int main(int argc, char *argv[]) {
 					break;
 				case SDLK_ESCAPE:
 					return 0;
-					/*case (SDLK_LEFT&&SDLK_RIGHT):
-					x = x;
-					break;
-					case (SDLK_DOWN && SDLK_UP):
-					y = y;
-					break;
-					*/
 				default:
 					break;
 				}
@@ -102,30 +91,20 @@ int main(int argc, char *argv[]) {
 		}
 
 		sx = sx + shotspeed;
-
-		render = SDL_CreateRenderer(window, -1, 0); // (name of the window, index of rendering, flags)
-		SDL_SetRenderDrawColor(render, 0, 0, 100, 255); // we set the color of the render 
-		SDL_RenderClear(render); //clear the entire screen to our selected color
-		SDL_Rect rectangle; //create a rectangle
-		rectangle.x = x;
-		rectangle.y = y;
-		rectangle.w = 75;
-		rectangle.h = 50;
-		SDL_SetRenderDrawColor(render, 255, 0, 0, 255); // set the color
-		SDL_RenderFillRect(render, &rectangle); //render the rectangle
-		SDL_Rect shot; 
-		shot.x = sx;
-		shot.y = sy;
-		shot.w = 10;
-		shot.h = 5;
-		SDL_SetRenderDrawColor(render, 0, 200, 50, 255);
-		SDL_RenderFillRect(render, &shot);
+		render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);// (name of the window, index of rendering, flags)
+		if (render == NULL) {
+			cout << "Not able to create the render " << SDL_GetError();
+		}
+		//SDL_SetRenderDrawColor(render, 0, 0, 100, 255); // we set the color of the render
+		SDL_RenderClear(render);
+		SDL_RenderCopy(render, background, NULL, NULL);
 		SDL_RenderPresent(render);
-		SDL_DestroyRenderer(render);
+		SDL_Delay(500);
+		SDL_FreeSurface();
 	}
 	SDL_DestroyWindow(window);
-
+	IMG_Quit();
 	SDL_Quit();
-
 	return 0;
 }
+
