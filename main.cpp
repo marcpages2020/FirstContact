@@ -15,7 +15,7 @@ const int SCREEN_HEIGHT = 480;
 int main(int argc, char *argv[]) {
 	SDL_Window *window; // we create a pointer for the window
 	SDL_Renderer *render;
-	SDL_Texture *background("background.png");
+	SDL_Surface *background;
 	SDL_Rect r_spaceship, r_shot, r_background;
 	int SDL_init(SDL_INIT_VIDEO);
 	int imgFlags = IMG_INIT_PNG;
@@ -95,12 +95,14 @@ int main(int argc, char *argv[]) {
 		if (render == NULL) {
 			cout << "Not able to create the render " << SDL_GetError();
 		}
+		background = IMG_Load("background.png");
+		SDL_Texture *background_text = SDL_CreateTextureFromSurface(render, background);
 		//SDL_SetRenderDrawColor(render, 0, 0, 100, 255); // we set the color of the render
 		SDL_RenderClear(render);
-		SDL_RenderCopy(render, background, NULL, NULL);
+		SDL_RenderCopy(render, background_text, NULL, NULL);
 		SDL_RenderPresent(render);
 		SDL_Delay(500);
-		SDL_FreeSurface();
+		SDL_FreeSurface(background);
 	}
 	SDL_DestroyWindow(window);
 	IMG_Quit();
