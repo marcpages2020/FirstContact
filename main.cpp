@@ -21,13 +21,14 @@ int main(int argc, char *argv[]) {
 	background = IMG_Load("Assets/background.png");
 	spaceship = IMG_Load("Assets/spaceship.png");
 	int SDL_init(SDL_INIT_VIDEO);
-	int imgFlags = IMG_INIT_PNG;
-	int mixflags = MIX_INIT_OGG;
+	IMG_Init(IMG_INIT_PNG);
+	Mix_Init(MIX_INIT_OGG);
+	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,2,8);
 
 	int x = 0;
 	int y = 0;
 	r_spaceship.x = 0;
-	r_spaceship.y = 0;
+	r_spaceship.y = 240;
 	r_spaceship.h = 50;
 	r_spaceship.w = 80;
 
@@ -50,16 +51,16 @@ int main(int argc, char *argv[]) {
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_UP:
-					y = y - speed;
+					r_spaceship.y = r_spaceship.y - speed;
 					break;
 				case SDLK_DOWN:
-					y = y + speed;
+					r_spaceship.y = r_spaceship.y + speed;
 					break;
 				case SDLK_RIGHT:
-					x = x + speed;
+					r_spaceship.x = r_spaceship.x + speed;
 					break;
 				case SDLK_LEFT:
-					x = x - speed;
+					r_spaceship.x = r_spaceship.x - speed;
 					break;
 				case SDLK_SPACE:
 					//sx = x + 45;
