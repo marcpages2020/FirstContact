@@ -8,6 +8,7 @@ using namespace std;
 #pragma comment(lib, "SDL/SDL2.lib")
 #pragma comment(lib, "SDL/SDL2main.lib")
 #pragma comment(lib, "SDL_image/libx86/SDL2_image.lib")
+#pragma comment(lib, "SDL_Mixer/libx86/SDL2_mixer.lib")
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -15,21 +16,31 @@ const int SCREEN_HEIGHT = 480;
 int main(int argc, char *argv[]) {
 	SDL_Window *window; // we create a pointer for the window
 	SDL_Renderer *render;
-	SDL_Surface *background;
-	SDL_Rect r_spaceship, r_shot, r_background;
+	SDL_Surface *background,*spaceship;
+	SDL_Rect r_spaceship, r_background;
+	background = IMG_Load("Assets/background.png");
+	spaceship = IMG_Load("Assets/spaceship.png");
 	int SDL_init(SDL_INIT_VIDEO);
 	int imgFlags = IMG_INIT_PNG;
+	int mixflags = MIX_INIT_OGG;
 
 	int x = 0;
 	int y = 0;
-	int sx = 0;
-	int sy = 0;
+	r_spaceship.x = 0;
+	r_spaceship.y = 0;
+	r_spaceship.h = 50;
+	r_spaceship.w = 80;
 
 	window = SDL_CreateWindow("MyAwesomeGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE); //(position,position,size,size,flag)
 	if (window == NULL) {
 		cout << "Could not create window" << SDL_GetError() << endl; // in the case it cannot be created it returns null
 		return 1;
 	}
+	render = SDL_CreateRenderer(window, -1, 0);
+	SDL_Texture *background_text = SDL_CreateTextureFromSurface(render, background);
+	SDL_FreeSurface(background);
+	SDL_Texture *spaceship_text = SDL_CreateTextureFromSurface(render, spaceship);
+	SDL_FreeSurface(spaceship);
 
 	while (1) {
 		SDL_Event event; //we create an event
@@ -51,8 +62,8 @@ int main(int argc, char *argv[]) {
 					x = x - speed;
 					break;
 				case SDLK_SPACE:
-					sx = x + 45;
-					sy = y + 25;
+					//sx = x + 45;
+					//sy = y + 25;
 					break;
 				case SDLK_ESCAPE:
 					return 0;
@@ -75,8 +86,8 @@ int main(int argc, char *argv[]) {
 					x = x;
 					break;
 				case SDLK_SPACE:
-					sx = sx;
-					sy = sy;
+					//sx = sx;
+					//sy = sy;
 					break;
 				case SDLK_ESCAPE:
 					break;
@@ -90,21 +101,18 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
-		sx = sx + shotspeed;
-		render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);// (name of the window, index of rendering, flags)
-		if (render == NULL) {
-			cout << "Not able to create the render " << SDL_GetError();
-		}
-		background = IMG_Load("background.png");
-		SDL_Texture *background_text = SDL_CreateTextureFromSurface(render, background);
+		//sx = sx + shotspeed;
 		//SDL_SetRenderDrawColor(render, 0, 0, 100, 255); // we set the color of the render
 		SDL_RenderClear(render);
 		SDL_RenderCopy(render, background_text, NULL, NULL);
+		SDL_RenderCopy(render, spaceship_text, NULL, &r_spaceship);
 		SDL_RenderPresent(render);
-		SDL_Delay(500);
-		SDL_FreeSurface(background);
 	}
 	SDL_DestroyWindow(window);
+	SDL_DestroyTexture(background_text);
+	SDL_DestroyTexture(spaceship_text);
+	Mix_CloseAudio();
+	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	return 0;
